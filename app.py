@@ -2,6 +2,14 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
+# Initialize session state variables
+if 'current_step' not in st.session_state:
+    st.session_state.current_step = 1
+if 'responses' not in st.session_state:
+    st.session_state.responses = []
+if 'admin_authenticated' not in st.session_state:
+    st.session_state.admin_authenticated = False
+
 # Move page configuration to the very top
 st.set_page_config(
     page_title="Automation Tools Survey",
