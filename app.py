@@ -378,9 +378,21 @@ def main():
         )
         
         st.markdown('<div class="question-text">On a scale of 1-5, how satisfied are you with the tool? *</div>', unsafe_allow_html=True)
+        col1, col2, col3, col4, col5 = st.columns(5)
+        with col1:
+            st.markdown('<div style="text-align: center;">1<br>Very Dissatisfied</div>', unsafe_allow_html=True)
+        with col2:
+            st.markdown('<div style="text-align: center;">2</div>', unsafe_allow_html=True)
+        with col3:
+            st.markdown('<div style="text-align: center;">3<br>Neutral</div>', unsafe_allow_html=True)
+        with col4:
+            st.markdown('<div style="text-align: center;">4</div>', unsafe_allow_html=True)
+        with col5:
+            st.markdown('<div style="text-align: center;">5<br>Very Satisfied</div>', unsafe_allow_html=True)
+
         satisfaction = st.radio(
             "",
-            options=['1 - Very Dissatisfied', '2', '3', '4', '5 - Very Satisfied'],
+            options=['1', '2', '3', '4', '5'],
             horizontal=True,
             label_visibility="collapsed"
         )
