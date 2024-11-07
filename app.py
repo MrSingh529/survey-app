@@ -2,6 +2,26 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
+# Admin password - you should change this to something secure
+ADMIN_PASSWORD = "@RVsolutions@1234"
+
+# Add this function before the main() function:
+def check_admin_password():
+    """Check if admin password is correct"""
+    if 'admin_authenticated' not in st.session_state:
+        st.session_state.admin_authenticated = False
+        
+    if not st.session_state.admin_authenticated:
+        password = st.text_input("Enter admin password:", type="password")
+        if st.button("Login"):
+            if password == ADMIN_PASSWORD:
+                st.session_state.admin_authenticated = True
+                st.rerun()
+            else:
+                st.error("Incorrect password")
+        return False
+    return True
+
 # Page configuration
 st.set_page_config(
     page_title="Automation Tools Survey",
@@ -187,22 +207,27 @@ def main():
             st.rerun()
 
     # Admin view in expander
-    with st.expander("Admin View (Click to see all responses)"):
-        if st.session_state.responses:
-            df = pd.DataFrame(st.session_state.responses)
-            st.dataframe(df)
-            
-            # Download button for admin
-            csv = df.to_csv(index=False).encode('utf-8')
-            st.download_button(
-                "Download Responses (CSV)",
-                csv,
-                "survey_responses.csv",
-                "text/csv",
-                key='download-csv'
-            )
-        else:
-            st.info("No responses collected yet.")
+    with st.expander("Admin View (Password Protected)"):
+        if check_admin_password():
+            if st.button("Logout", key="logout"):
+                st.session_state.admin_authenticated = False
+                st.rerun()
+                
+            if st.session_state.responses:
+                df = pd.DataFrame(st.session_state.responses)
+                st.dataframe(df)
+                
+                # Download button for admin
+                csv = df.to_csv(index=False).encode('utf-8')
+                st.download_button(
+                    "Download Responses (CSV)",
+                    csv,
+                    "survey_responses.csv",
+                    "text/csv",
+                    key='download-csv'
+                )
+            else:
+                st.info("No responses collected yet.")
 
 if __name__ == "__main__":
     main()
