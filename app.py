@@ -2,8 +2,10 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
-# Admin password - you should change this to something secure
-ADMIN_PASSWORD = st.secrets["@RVsolutions@1234"]
+try:
+    ADMIN_PASSWORD = st.secrets["general"]["admin_password"]
+except:
+    ADMIN_PASSWORD = "@RVsolutions@1234"  # Fallback password
 
 # Add this function before the main() function:
 def check_admin_password():
