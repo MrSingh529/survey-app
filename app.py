@@ -8,8 +8,8 @@ import os
 if 'current_step' not in st.session_state:
     st.session_state.current_step = 1
 if 'responses' not in st.session_state:
-    if os.path.exists('/mnt/data/survey_responses.csv'):
-        st.session_state.responses = pd.read_csv('/mnt/data/survey_responses.csv').to_dict('records')
+    if os.path.exists('survey_responses.csv'):
+        st.session_state.responses = pd.read_csv('survey_responses.csv').to_dict('records')
     else:
         st.session_state.responses = []
 if 'admin_authenticated' not in st.session_state:
@@ -175,7 +175,7 @@ if hasattr(st, 'secrets') and 'general' in st.secrets:
 # Function to save responses to CSV
 def save_responses_to_csv():
     df = pd.DataFrame(st.session_state.responses)
-    df.to_csv('/mnt/data/survey_responses.csv', index=False)
+    df.to_csv('survey_responses.csv', index=False)
 
 # Add system-tool mapping
 SYSTEM_TOOL_MAPPING = {
