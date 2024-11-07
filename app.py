@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
+import time
 
 # Initialize session state variables
 if 'current_step' not in st.session_state:
@@ -10,11 +11,97 @@ if 'responses' not in st.session_state:
 if 'admin_authenticated' not in st.session_state:
     st.session_state.admin_authenticated = False
 
-# Move page configuration to the very top
+# Custom CSS for better styling
 st.set_page_config(
     page_title="Automation Tools Survey",
     page_icon="🤖",
     layout="centered"
+)
+
+# Add custom CSS
+st.markdown("""
+    <style>
+    .main {
+        background-color: #f0f2f6;
+        padding: 20px;
+    }
+    
+    .stButton>button {
+        border-radius: 20px;
+        padding: 10px 24px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .stButton>button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+        background: linear-gradient(45deg, #1f77b4, #2ecc71);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+        padding: 20px 0;
+        text-align: center;
+        animation: fadeIn 1.5s ease-in;
+    }
+    
+    .step-container {
+        padding: 20px;
+        border-radius: 10px;
+        background: white;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin: 20px 0;
+        animation: slideIn 0.5s ease-out;
+    }
+    
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    
+    @keyframes slideIn {
+        0% { transform: translateY(20px); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+    }
+    
+    .stProgress > div > div {
+        background-color: #2ecc71;
+        transition: all 0.3s ease;
+    }
+    
+    .success-message {
+        text-align: center;
+        padding: 40px;
+        background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
+        border-radius: 15px;
+        animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    @keyframes popIn {
+        0% { transform: scale(0.8); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    
+    .info-box {
+        background-color: #e8f4f8;
+        border-left: 5px solid #1f77b4;
+        padding: 10px 15px;
+        margin: 10px 0;
+        border-radius: 0 5px 5px 0;
+    }
+    
+    .stSelectbox, .stTextInput {
+        transition: all 0.3s ease;
+    }
+    
+    .stSelectbox:hover, .stTextInput:hover {
+        transform: translateY(-2px);
+    }
+    </style>
+""", unsafe_allow_html=True)
 )
 
 # Default password if secrets are not set up
@@ -69,6 +156,10 @@ DEPARTMENT_DATA = {
     }
 }
 
+def show_spinner_with_message(message, duration=0.5):
+    with st.spinner(message):
+        time.sleep(duration)
+
 def check_system_number(department, tool, system_number):
     """Check if the system number is valid for the selected department and tool"""
     if department in SYSTEM_TOOL_MAPPING and tool in SYSTEM_TOOL_MAPPING[department]:
@@ -97,39 +188,50 @@ def reset_form():
             del st.session_state[key]
 
 def main():
-    st.title("🤖 Automation Tools Survey")
+    # Animated title with gradient
+    st.markdown("<h1>🤖 Automation Tools Survey</h1>", unsafe_allow_html=True)
     
-    # Progress bar
+    # Progress indicator with custom styling
     if st.session_state.current_step < 6:
-        st.progress(st.session_state.current_step / 5)
-        st.write(f"Step {st.session_state.current_step} of 5")
+        col1, col2 = st.columns([7, 3])
+        with col1:
+            st.progress(st.session_state.current_step / 5)
+        with col2:
+            st.write(f"Step {st.session_state.current_step} of 5")
     
-    # Main form container
+    # Main form container with animation
+    st.markdown(f'<div class="step-container">', unsafe_allow_html=True)
+    
     if st.session_state.current_step == 1:
-        st.subheader("👥 Department Selection")
+        st.markdown("### 👥 Department Selection")
+        st.markdown('<div class="info-box">Please select your department to begin the survey.</div>', 
+                   unsafe_allow_html=True)
         department = st.selectbox(
-            "Please select your department:",
+            "Choose your department:",
             options=list(DEPARTMENT_DATA.keys())
         )
-        if st.button("Next"):
+        if st.button("Next →"):
+            show_spinner_with_message("Saving department selection...")
             st.session_state.department = department
             st.session_state.current_step = 2
             st.rerun()
             
     elif st.session_state.current_step == 2:
-        st.subheader("🛠️ Tool Selection")
-        st.info(f"Department: {st.session_state.department}")
+        st.markdown("### 🛠️ Tool Selection")
+        st.markdown(f'<div class="info-box">Department: {st.session_state.department}</div>', 
+                   unsafe_allow_html=True)
         tool = st.selectbox(
-            "Select the automation tool you're using:",
+            "Which automation tool are you using?",
             options=list(DEPARTMENT_DATA[st.session_state.department]['tools'].keys())
         )
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("Back"):
+            if st.button("← Back"):
                 st.session_state.current_step = 1
                 st.rerun()
         with col2:
-            if st.button("Next"):
+            if st.button("Next →"):
+                show_spinner_with_message("Loading tool information...")
                 st.session_state.tool = tool
                 st.session_state.current_step = 3
                 st.rerun()
@@ -184,11 +286,24 @@ def main():
                 st.rerun()
                 
     elif st.session_state.current_step == 5:
-        st.subheader("📋 Survey Questions")
-        st.info(f"Department: {st.session_state.department} | Tool: {st.session_state.tool} | User: {st.session_state.user}")
+        st.markdown("### 📋 Survey Questions")
+        st.markdown(
+            f'<div class="info-box">'
+            f'Department: {st.session_state.department} | '
+            f'Tool: {st.session_state.tool} | '
+            f'User: {st.session_state.user}'
+            f'</div>', 
+            unsafe_allow_html=True
+        )
         
-        # 🛠 Tool Usage and Satisfaction
-        st.subheader("🛠 Tool Usage and Satisfaction")
+        # Tool Usage section with animations and better spacing
+        st.markdown("""
+            <div style='padding: 20px 0;'>
+                <h3 style='color: #1f77b4; animation: fadeIn 1s ease-in;'>
+                    🛠 Tool Usage and Satisfaction
+                </h3>
+            </div>
+        """, unsafe_allow_html=True)
         
         usage_duration = st.radio(
             "How long have you been using this tool?",
@@ -280,17 +395,37 @@ def main():
                     st.rerun()
 
     elif st.session_state.current_step == 6:
-        st.success("🎉 Thank you! Your survey has been submitted successfully.")
+        st.markdown("""
+            <div class='success-message'>
+                <h2>🎉 Thank you!</h2>
+                <p style='font-size: 1.2em; color: #2c3e50;'>
+                    Your survey has been submitted successfully.
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
         st.balloons()
         
-        if st.button("Submit Another Response"):
-            reset_form()
-            st.rerun()
+        # Center the button
+        col1, col2, col3 = st.columns([1,2,1])
+        with col2:
+            if st.button("📝 Submit Another Response"):
+                show_spinner_with_message("Preparing new survey...")
+                reset_form()
+                st.rerun()
 
-    # Admin view in expander
-    with st.expander("Admin View (Password Protected)"):
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # Enhanced Admin view
+    with st.expander("🔐 Admin View (Password Protected)"):
         if check_admin_password():
-            if st.button("Logout", key="logout"):
+            st.markdown("""
+                <div style='background-color: #f8f9fa; padding: 15px; border-radius: 10px;'>
+                    <h4 style='color: #2c3e50;'>Survey Responses Dashboard</h4>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            if st.button("🚪 Logout", key="logout"):
+                show_spinner_with_message("Logging out...")
                 st.session_state.admin_authenticated = False
                 st.rerun()
                 
@@ -298,17 +433,19 @@ def main():
                 df = pd.DataFrame(st.session_state.responses)
                 st.dataframe(df)
                 
-                # Download button for admin
-                csv = df.to_csv(index=False).encode('utf-8')
-                st.download_button(
-                    "Download Responses (CSV)",
-                    csv,
-                    "survey_responses.csv",
-                    "text/csv",
-                    key='download-csv'
-                )
+                # Enhanced download button
+                col1, col2, col3 = st.columns([1,2,1])
+                with col2:
+                    csv = df.to_csv(index=False).encode('utf-8')
+                    st.download_button(
+                        "📥 Download Responses (CSV)",
+                        csv,
+                        "survey_responses.csv",
+                        "text/csv",
+                        key='download-csv'
+                    )
             else:
-                st.info("No responses collected yet.")
+                st.info("📊 No responses collected yet.")
 
 if __name__ == "__main__":
     main()
