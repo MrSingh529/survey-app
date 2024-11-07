@@ -102,7 +102,6 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
-)
 
 # Default password if secrets are not set up
 ADMIN_PASSWORD = "@RVsolutions@1234"
