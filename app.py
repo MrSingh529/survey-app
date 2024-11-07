@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import datetime
 
 # Admin password - you should change this to something secure
-ADMIN_PASSWORD = "@RVsolutions@1234"
+ADMIN_PASSWORD = st.secrets["@RVsolutions@1234"]
 
 # Add this function before the main() function:
 def check_admin_password():
