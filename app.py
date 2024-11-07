@@ -38,14 +38,24 @@ st.markdown("""
         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
     
-    h1 {
+    h1, h2 {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    text-align: center;
+    animation: fadeIn 1.5s ease-in;
+    }
+
+    .title-wrapper {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+    }
+
+    .gradient-text {
         background: linear-gradient(45deg, #1f77b4, #2ecc71);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-weight: 700;
-        padding: 20px 0;
-        text-align: center;
-        animation: fadeIn 1.5s ease-in;
     }
     
     .step-container {
@@ -187,21 +197,26 @@ def reset_form():
             del st.session_state[key]
 
 def main():
-    # Add this at the very start of the main function
+    # Title and Heading with company name
     st.markdown("""
-        <div style='text-align: center; padding: 1rem;'>
+        <div style='padding: 1.5rem 0; text-align: center;'>
             <h1 style='
-                color: #1f77b4;
                 font-size: 2.5rem;
-                font-weight: bold;
-                margin-bottom: 2rem;
-                background: linear-gradient(45deg, #1f77b4, #2ecc71);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                animation: fadeIn 1.5s ease-in;
+                font-weight: 800;
+                margin-bottom: 1rem;
+                color: #1f77b4;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             '>
-                🤖 Automation Tools Survey
+                🤖 RV Solutions
             </h1>
+            <h2 style='
+                font-size: 1.8rem;
+                font-weight: 600;
+                color: #2ecc71;
+                margin-bottom: 2rem;
+            '>
+                Automation Tools Survey
+            </h2>
         </div>
     """, unsafe_allow_html=True)
     
