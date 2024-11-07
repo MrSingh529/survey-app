@@ -330,9 +330,8 @@ def main():
         """, unsafe_allow_html=True)
         
         usage_duration = st.radio(
-            "How long have you been using this tool?",
-            options=['Less than 1 month', '1-3 months', 'More than 3 months'],
-            required=True
+            "How long have you been using this tool? *",  # Added asterisk to indicate required
+            options=['Less than 1 month', '1-3 months', 'More than 3 months']
         )
         
         satisfaction = st.slider(
@@ -395,6 +394,8 @@ def main():
             if st.button("Submit"):
                 if not features:
                     st.error("Please select at least one valuable feature")
+                elif not usage_duration:  # Add validation for required fields
+                    st.error("Please select how long you've been using the tool")
                 else:
                     response = {
                         'department': st.session_state.department,
