@@ -382,14 +382,7 @@ def main():
         )
         
         # Satisfaction question
-        st.markdown('<div class="question-text">On a scale of 1-5, how satisfied are you with the tool? *</div>', unsafe_allow_html=True)
-        st.markdown("""
-            <div class="satisfaction-scale">
-                <span>Very Dissatisfied</span>
-                <span style="margin-left: 40px;">Neutral</span>
-                <span>Very Satisfied</span>
-            </div>
-        """, unsafe_allow_html=True)
+        st.markdown('<div class="question-text">On a scale of 1-5, how satisfied are you with the tool? (1 = Very Dissatisfied, 5 = Very Satisfied) *</div>', unsafe_allow_html=True)
         satisfaction = st.radio(
             " ",  # Single space
             ['1', '2', '3', '4', '5'],
