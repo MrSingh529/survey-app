@@ -310,6 +310,41 @@ def main():
                 st.rerun()
                 
     elif st.session_state.current_step == 5:
+        # Add these styles for text inputs and radio buttons
+        st.markdown("""
+            <style>
+            .stTextArea textarea {
+                border: 1px solid #ccc !important;
+                border-radius: 5px !important;
+                padding: 10px !important;
+                background-color: white !important;
+            }
+            .stTextArea textarea:focus {
+                border-color: #1f77b4 !important;
+                box-shadow: 0 0 0 1px #1f77b4 !important;
+            }
+            .stRadio > label {
+                background-color: #f8f9fa;
+                padding: 10px 15px;
+                border-radius: 5px;
+                margin: 5px 0;
+                width: 100%;
+                transition: all 0.2s ease;
+            }
+            .stRadio > label:hover {
+                background-color: #e9ecef;
+            }
+            .question-header {
+                font-size: 1.1rem;
+                font-weight: 500;
+                color: #2c3e50;
+                margin: 20px 0 10px 0;
+                padding-bottom: 5px;
+                border-bottom: 2px solid #edf2f7;
+            }
+            </style>
+        """, unsafe_allow_html=True)
+
         st.markdown("### 📋 Survey Questions")
         st.markdown(
             f'<div class="info-box">'
@@ -320,69 +355,100 @@ def main():
             unsafe_allow_html=True
         )
         
-        # Tool Usage section with animations and better spacing
+        # Tool Usage section
         st.markdown("""
-            <div style='padding: 20px 0;'>
-                <h3 style='color: #1f77b4; animation: fadeIn 1s ease-in;'>
-                    🛠 Tool Usage and Satisfaction
-                </h3>
+            <div class='section-title' style='margin-top: 30px;'>
+                <h3 style='color: #1f77b4;'>🛠 Tool Usage and Satisfaction</h3>
             </div>
         """, unsafe_allow_html=True)
         
+        st.markdown('<div class="question-header">How long have you been using this tool? *</div>', unsafe_allow_html=True)
         usage_duration = st.radio(
-            "1. How long have you been using this tool? *",  # Added asterisk to indicate required
-            options=['Less than 1 month', '1-3 months', 'More than 3 months']
+            "",
+            options=['Less than 1 month', '1-3 months', 'More than 3 months'],
+            horizontal=True
         )
         
-        satisfaction = st.slider(
-            "2. On a scale of 1-5, how satisfied are you with the tool? (1 = Very Dissatisfied, 5 = Very Satisfied)",
-            1, 5, 3
+        st.markdown('<div class="question-header">On a scale of 1-5, how satisfied are you with the tool? *</div>', unsafe_allow_html=True)
+        satisfaction = st.radio(
+            "",
+            options=['1 - Very Dissatisfied', '2', '3', '4', '5 - Very Satisfied'],
+            horizontal=True
         )
         
+        st.markdown('<div class="question-header">What aspects of the tool do you find most valuable? (Select all that apply) *</div>', unsafe_allow_html=True)
         features = st.multiselect(
-            "3. What aspects of the tool do you find most valuable? (Select all that apply)",
-            ['Easy to use', 'Reduces manual work', 'Improves accuracy', 'Speeds up processes', 'Other']
+            "",
+            ['Easy to use', 'Reduces manual work', 'Improves accuracy', 'Speeds up processes', 'Other'],
+            placeholder="Select one or more options"
         )
         
-        # ⏱ Time and Productivity Impact
-        st.subheader("⏱ Time and Productivity Impact")
+        # Time and Productivity Impact
+        st.markdown("""
+            <div class='section-title' style='margin-top: 40px;'>
+                <h3 style='color: #1f77b4;'>⏱ Time and Productivity Impact</h3>
+            </div>
+        """, unsafe_allow_html=True)
         
-        time_saved = st.select_slider(
-            "4. On average, how much time do you save daily by using this tool?",
-            options=['30-60 minutes', '1-2 hours', '2-4 hours', 'More than 4 hours']
+        st.markdown('<div class="question-header">On average, how much time do you save daily using this tool? *</div>', unsafe_allow_html=True)
+        time_saved = st.radio(
+            "",
+            options=['30-60 minutes', '1-2 hours', '2-4 hours', 'More than 4 hours'],
+            horizontal=True
         )
         
-        automation_percentage = st.select_slider(
-            "5. What percentage of your previous manual tasks has been automated?",
-            options=['0-25%', '26-50%', '51-75%', '76-100%']
+        st.markdown('<div class="question-header">What percentage of your previous manual tasks has been automated? *</div>', unsafe_allow_html=True)
+        automation_percentage = st.radio(
+            "",
+            options=['0-25%', '26-50%', '51-75%', '76-100%'],
+            horizontal=True
         )
         
+        st.markdown('<div class="question-header">How are you utilizing the time saved through automation? *</div>', unsafe_allow_html=True)
         time_utilization = st.text_area(
-            "6. How are you utilizing the time saved through automation?",
-            height=100
+            "",
+            height=100,
+            placeholder="Please describe how you are using the time saved...",
+            key="time_util"
         )
         
-        # 📈 Process Improvement
-        st.subheader("📈 Process Improvement")
+        # Process Improvement
+        st.markdown("""
+            <div class='section-title' style='margin-top: 40px;'>
+                <h3 style='color: #1f77b4;'>📈 Process Improvement</h3>
+            </div>
+        """, unsafe_allow_html=True)
         
+        st.markdown('<div class="question-header">Have you noticed any reduction in errors since using the automation tool? *</div>', unsafe_allow_html=True)
         error_reduction = st.radio(
-            "7. Have you noticed any reduction in errors since using the automation tool?",
-            options=['Yes', 'No', 'Errors have increased']
+            "",
+            options=['Yes', 'No', 'Errors have increased'],
+            horizontal=True,
+            key="error_red"
         )
         
+        st.markdown('<div class="question-header">Do you have any suggestions for improving the tool? *</div>', unsafe_allow_html=True)
         suggestions = st.text_area(
-            "8. Do you have any suggestions for improving the tool?",
-            height=100
+            "",
+            height=100,
+            placeholder="Please share your suggestions for improvement...",
+            key="suggestions"
         )
         
+        st.markdown('<div class="question-header">How has the automation tool affected your job satisfaction? *</div>', unsafe_allow_html=True)
         job_satisfaction = st.radio(
-            "9. How has the automation tool affected your job satisfaction?",
-            options=['Positively', 'No Change', 'Negatively']
+            "",
+            options=['Positively', 'No Change', 'Negatively'],
+            horizontal=True,
+            key="job_sat"
         )
         
+        st.markdown('<div class="question-header">Additional comments or feedback (Optional):</div>', unsafe_allow_html=True)
         additional_feedback = st.text_area(
-            "10. Please share any additional comments or feedback about your experience with the automation tool: (Optional)",
-            height=100
+            "",
+            height=100,
+            placeholder="Please share any additional feedback...",
+            key="add_feedback"
         )
         
         col1, col2 = st.columns(2)
