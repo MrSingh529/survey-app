@@ -376,9 +376,6 @@ def main():
                 st.session_state.system_number = system_number
                 st.session_state.current_step = 5
                 st.rerun()
-                 
-    def main():
-    # [Previous heading and steps 1-4 remain exactly the same until step 5]
     
     elif st.session_state.current_step == 5:
         st.markdown("### 📋 Survey Questions")
