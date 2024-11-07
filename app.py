@@ -137,75 +137,55 @@ st.markdown("""
         color: #2c3e50 !important;
     }
     
+    /* New Radio Button Styling */
     .row-widget.stRadio > div[role="radiogroup"] {
         display: flex !important;
-        justify-content: flex-start !important;
         gap: 20px !important;
-        background-color: #f8fafc !important;
-        padding: 15px !important;
-        border-radius: 8px !important;
-        flex-wrap: wrap !important;
+        background: white !important;
+        padding: 10px !important;
     }
 
-    .row-widget.stRadio > div[role="radiogroup"] label {
-        background: white !important;
-        padding: 10px 15px !important;
-        border-radius: 5px !important;
-        border: 1px solid #e2e8f0 !important;
+    .row-widget.stRadio > div[role="radiogroup"] > label {
         display: flex !important;
         align-items: center !important;
-        gap: 5px !important;
-        cursor: pointer !important;
-        transition: all 0.2s ease !important;
-        margin: 0 !important;
-        flex: 0 1 auto !important;
-        min-width: max-content !important;
-    }
-
-    .row-widget.stRadio > div[role="radiogroup"] label:hover {
-        border-color: #1f77b4 !important;
-        background: #f0f7ff !important;
-        transform: translateY(-1px) !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
-    }
-
-    /* Hide default markdown space */
-    .stRadio div[data-testid="stMarkdownContainer"] {
-        display: none !important;
-    }
-
-    /* Style the selected radio option */
-    .row-widget.stRadio > div[role="radiogroup"] label[data-value="true"] {
-        background-color: #edf7ff !important;
-        border-color: #1f77b4 !important;
-        font-weight: 500 !important;
-    }
-
-    .section-title {
-        color: #1f77b4;
-        font-size: 1.3rem;
-        font-weight: 600;
-        margin: 30px 0 20px 0;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #edf2f7;
-    }
-
-    /* Multiselect styling */
-    .stMultiSelect > label {
-        font-size: 14px !important;
-        color: #2c3e50 !important;
-    }
-
-    .stMultiSelect div[data-baseweb="select"] {
-        background-color: white !important;
+        justify-content: center !important;
+        width: 50px !important;
+        height: 50px !important;
+        background: white !important;
         border: 1px solid #e2e8f0 !important;
-        border-radius: 5px !important;
-        transition: all 0.2s ease !important;
+        border-radius: 4px !important;
+        cursor: pointer !important;
+        position: relative !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
-    .stMultiSelect div[data-baseweb="select"]:hover {
+    .row-widget.stRadio > div[role="radiogroup"] > label:hover {
         border-color: #1f77b4 !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+        background: #f8fafc !important;
+    }
+
+    .row-widget.stRadio > div[role="radiogroup"] > label > div {
+        width: 20px !important;
+        height: 20px !important;
+        border: 2px solid #e2e8f0 !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .row-widget.stRadio > div[role="radiogroup"] > label[data-value="true"] > div {
+        border-color: #1f77b4 !important;
+        background: white !important;
+    }
+
+    .row-widget.stRadio > div[role="radiogroup"] > label[data-value="true"] > div:after {
+        content: "" !important;
+        width: 10px !important;
+        height: 10px !important;
+        background: #1f77b4 !important;
+        border-radius: 50% !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -429,17 +409,13 @@ def main():
         )
         
         st.markdown('<div class="question-text">On a scale of 1-5, how satisfied are you with the tool? *</div>', unsafe_allow_html=True)
-        col1, col2, col3, col4, col5 = st.columns(5)
-        with col1:
-            st.markdown('<div style="text-align: center;">1<br>Very Dissatisfied</div>', unsafe_allow_html=True)
-        with col2:
-            st.markdown('<div style="text-align: center;">2</div>', unsafe_allow_html=True)
-        with col3:
-            st.markdown('<div style="text-align: center;">3<br>Neutral</div>', unsafe_allow_html=True)
-        with col4:
-            st.markdown('<div style="text-align: center;">4</div>', unsafe_allow_html=True)
-        with col5:
-            st.markdown('<div style="text-align: center;">5<br>Very Satisfied</div>', unsafe_allow_html=True)
+        st.markdown("""
+            <div style='display: flex; justify-content: space-between; margin-bottom: 10px;'>
+                <span>Very Dissatisfied</span>
+                <span>Neutral</span>
+                <span>Very Satisfied</span>
+            </div>
+        """, unsafe_allow_html=True)
         satisfaction = st.radio(
             "Satisfaction",
             options=['1', '2', '3', '4', '5'],
