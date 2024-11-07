@@ -301,7 +301,7 @@ def main():
             if not is_valid_format:
                 st.warning("System number should be at least 5 characters long")
             elif not is_valid_system:
-                st.error(f"❌ The tool '{st.session_state.tool}' is not installed on system {system_number}. Please contact IT support if you believe this is an error.")
+                st.error(f"❌ The tool '{st.session_state.tool}' is not installed on system {system_number}. Please contact harpinder.singh@rvsolutions.in if you believe this is an error.")
             
         col1, col2 = st.columns(2)
         with col1:
