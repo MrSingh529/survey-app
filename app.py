@@ -330,17 +330,17 @@ def main():
         """, unsafe_allow_html=True)
         
         usage_duration = st.radio(
-            "How long have you been using this tool? *",  # Added asterisk to indicate required
+            "1. How long have you been using this tool? *",  # Added asterisk to indicate required
             options=['Less than 1 month', '1-3 months', 'More than 3 months']
         )
         
         satisfaction = st.slider(
-            "On a scale of 1-5, how satisfied are you with the tool? (1 = Very Dissatisfied, 5 = Very Satisfied)",
+            "2. On a scale of 1-5, how satisfied are you with the tool? (1 = Very Dissatisfied, 5 = Very Satisfied)",
             1, 5, 3
         )
         
         features = st.multiselect(
-            "What aspects of the tool do you find most valuable? (Select all that apply)",
+            "3. What aspects of the tool do you find most valuable? (Select all that apply)",
             ['Easy to use', 'Reduces manual work', 'Improves accuracy', 'Speeds up processes', 'Other']
         )
         
@@ -348,17 +348,17 @@ def main():
         st.subheader("⏱ Time and Productivity Impact")
         
         time_saved = st.select_slider(
-            "On average, how much time do you save daily by using this tool?",
+            "4. On average, how much time do you save daily by using this tool?",
             options=['30-60 minutes', '1-2 hours', '2-4 hours', 'More than 4 hours']
         )
         
         automation_percentage = st.select_slider(
-            "What percentage of your previous manual tasks has been automated?",
+            "5. What percentage of your previous manual tasks has been automated?",
             options=['0-25%', '26-50%', '51-75%', '76-100%']
         )
         
         time_utilization = st.text_area(
-            "How are you utilizing the time saved through automation?",
+            "6. How are you utilizing the time saved through automation?",
             height=100
         )
         
@@ -366,22 +366,22 @@ def main():
         st.subheader("📈 Process Improvement")
         
         error_reduction = st.radio(
-            "Have you noticed any reduction in errors since using the automation tool?",
+            "7. Have you noticed any reduction in errors since using the automation tool?",
             options=['Yes', 'No', 'Errors have increased']
         )
         
         suggestions = st.text_area(
-            "Do you have any suggestions for improving the tool?",
+            "8. Do you have any suggestions for improving the tool?",
             height=100
         )
         
         job_satisfaction = st.radio(
-            "How has the automation tool affected your job satisfaction?",
+            "9. How has the automation tool affected your job satisfaction?",
             options=['Positively', 'No Change', 'Negatively']
         )
         
         additional_feedback = st.text_area(
-            "Please share any additional comments or feedback about your experience with the automation tool: (Optional)",
+            "10. Please share any additional comments or feedback about your experience with the automation tool: (Optional)",
             height=100
         )
         
