@@ -287,11 +287,6 @@ def main():
         st.subheader("💻 System Information")
         st.info(f"Department: {st.session_state.department} | Tool: {st.session_state.tool} | User: {st.session_state.user}")
         
-        # Show valid system numbers for reference (remove in production)
-        if st.session_state.department in SYSTEM_TOOL_MAPPING and st.session_state.tool in SYSTEM_TOOL_MAPPING[st.session_state.department]:
-            valid_systems = SYSTEM_TOOL_MAPPING[st.session_state.department][st.session_state.tool]
-            st.caption(f"Valid system numbers for testing: {', '.join(valid_systems)}")
-        
         system_number = st.text_input("Enter your system number:")
         
         is_valid_format = len(system_number) >= 5 if system_number else False
