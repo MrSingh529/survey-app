@@ -23,8 +23,8 @@ if hasattr(st, 'secrets') and 'general' in st.secrets:
 SYSTEM_TOOL_MAPPING = {
     'TSG': {
         'RA Invoice Tracker': ['RVS0F5C', 'RVS0F42', 'RVS1034'],
-        'RA PO Extraction Tool': ['Not Installed ', 'Not Installed', 'Not Installed']
-        'Telecom RAN KPI': ['Developed but Not Installed ', 'Developed but Not Installed']
+        'RA PO Extraction Tool': ['Not Installed', 'Not Installed', 'Not Installed'],
+        'Telecom RAN KPI': ['Developed but Not Installed', 'Developed but Not Installed']
     },
     'Finance': {
         'SMS & Tally Fnf Reco': ['RVS120A', 'RVS1094'],
@@ -32,7 +32,7 @@ SYSTEM_TOOL_MAPPING = {
     },
     'CSD': {
         'STN MIS Update Tool': ['RVSBF0', 'RVS0E77'],
-        'Realme Claim Update Tool': ['In Development', 'In Development']
+        'Realme Claim Update Tool': ['In Development', 'In Development'],
         'RV SMS Claim Update Tool': ['In Development', 'In Development']
     }
 }
@@ -48,14 +48,14 @@ DEPARTMENT_DATA = {
     'CSD': {
         'tools': {
             'STN MIS Update Tool': ['Inderjeet', 'Dushyant Kumar'],
-            'Realme Claim Update Tool': ['Hari Kishan', 'Mohit Senger']
+            'Realme Claim Update Tool': ['Hari Kishan', 'Mohit Senger'],
             'RV SMS Claim Update Tool': ['Hari Kishan', 'Mohit Senger']
         }
     },
     'TSG': {
         'tools': {
             'RA Invoice Tracker': ['Rekha Pujari', 'Kokil Goswami', 'Sonika'],
-            'RA PO Extraction Tool': ['NA', 'NA']
+            'RA PO Extraction Tool': ['NA', 'NA'],
             'Telecom RAN KPI': ['NA', 'NA']
         }
     }
