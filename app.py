@@ -187,10 +187,25 @@ def reset_form():
             del st.session_state[key]
 
 def main():
-    # Animated title with gradient
-    st.markdown("<h1>🤖 Automation Tools Survey</h1>", unsafe_allow_html=True)
+    # Add this at the very start of the main function
+    st.markdown("""
+        <div style='text-align: center; padding: 1rem;'>
+            <h1 style='
+                color: #1f77b4;
+                font-size: 2.5rem;
+                font-weight: bold;
+                margin-bottom: 2rem;
+                background: linear-gradient(45deg, #1f77b4, #2ecc71);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                animation: fadeIn 1.5s ease-in;
+            '>
+                🤖 Automation Tools Survey
+            </h1>
+        </div>
+    """, unsafe_allow_html=True)
     
-    # Progress indicator with custom styling
+    # Progress indicator
     if st.session_state.current_step < 6:
         col1, col2 = st.columns([7, 3])
         with col1:
