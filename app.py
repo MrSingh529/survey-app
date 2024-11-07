@@ -2,28 +2,6 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
-try:
-    ADMIN_PASSWORD = st.secrets["general"]["admin_password"]
-except:
-    ADMIN_PASSWORD = "@RVsolutions@1234"  # Fallback password
-
-# Add this function before the main() function:
-def check_admin_password():
-    """Check if admin password is correct"""
-    if 'admin_authenticated' not in st.session_state:
-        st.session_state.admin_authenticated = False
-        
-    if not st.session_state.admin_authenticated:
-        password = st.text_input("Enter admin password:", type="password")
-        if st.button("Login"):
-            if password == ADMIN_PASSWORD:
-                st.session_state.admin_authenticated = True
-                st.rerun()
-            else:
-                st.error("Incorrect password")
-        return False
-    return True
-
 # Page configuration
 st.set_page_config(
     page_title="Automation Tools Survey",
@@ -31,11 +9,19 @@ st.set_page_config(
     layout="centered"
 )
 
+# Use secrets if available, otherwise fall back to default password
+try:
+    ADMIN_PASSWORD = st.secrets["general"]["admin_password"]
+except:
+    ADMIN_PASSWORD = "@RVsolutions@1234"  # Fallback password
+
 # Initialize session state
 if 'current_step' not in st.session_state:
     st.session_state.current_step = 1
 if 'responses' not in st.session_state:
     st.session_state.responses = []
+if 'admin_authenticated' not in st.session_state:
+    st.session_state.admin_authenticated = False
 
 # Your company data
 DEPARTMENT_DATA = {
@@ -59,11 +45,24 @@ DEPARTMENT_DATA = {
     }
 }
 
+def check_admin_password():
+    """Check if admin password is correct"""
+    if not st.session_state.admin_authenticated:
+        password = st.text_input("Enter admin password:", type="password")
+        if st.button("Login"):
+            if password == ADMIN_PASSWORD:
+                st.session_state.admin_authenticated = True
+                st.rerun()
+            else:
+                st.error("Incorrect password")
+        return False
+    return True
+
 def reset_form():
     """Reset the form to initial state"""
     st.session_state.current_step = 1
     for key in list(st.session_state.keys()):
-        if key not in ['responses', 'current_step']:
+        if key not in ['responses', 'current_step', 'admin_authenticated']:
             del st.session_state[key]
 
 def main():
