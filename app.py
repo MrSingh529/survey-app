@@ -52,12 +52,6 @@ st.markdown("""
         margin-bottom: 2rem;
     }
 
-    .gradient-text {
-        background: linear-gradient(45deg, #1f77b4, #2ecc71);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    
     .step-container {
         padding: 20px;
         border-radius: 10px;
@@ -102,14 +96,6 @@ st.markdown("""
         margin: 10px 0;
         border-radius: 0 5px 5px 0;
     }
-    
-    .stSelectbox, .stTextInput {
-        transition: all 0.3s ease;
-    }
-    
-    .stSelectbox:hover, .stTextInput:hover {
-        transform: translateY(-2px);
-    }
 
     .question-text {
         font-size: 1.1rem;
@@ -131,61 +117,66 @@ st.markdown("""
         box-shadow: 0 0 0 1px #1f77b4 !important;
     }
 
-    /* Updated Radio Button Styling */
-    .stRadio > label {
-        font-size: 14px !important;
-        color: #2c3e50 !important;
+    /* Clean Radio Button Styling */
+    .stRadio > div {
+        gap: 20px !important;
     }
     
-    /* New Radio Button Styling */
-    .row-widget.stRadio > div[role="radiogroup"] {
-        display: flex !important;
-        gap: 20px !important;
-        background: white !important;
+    .stRadio > div > label {
         padding: 10px !important;
-    }
-
-    .row-widget.stRadio > div[role="radiogroup"] > label {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 50px !important;
-        height: 50px !important;
         background: white !important;
-        border: 1px solid #e2e8f0 !important;
+        border: 1px solid #ddd !important;
         border-radius: 4px !important;
-        cursor: pointer !important;
-        position: relative !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    .row-widget.stRadio > div[role="radiogroup"] > label:hover {
-        border-color: #1f77b4 !important;
-        background: #f8fafc !important;
-    }
-
-    .row-widget.stRadio > div[role="radiogroup"] > label > div {
-        width: 20px !important;
-        height: 20px !important;
-        border: 2px solid #e2e8f0 !important;
-        border-radius: 50% !important;
+        min-width: 40px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
     }
 
-    .row-widget.stRadio > div[role="radiogroup"] > label[data-value="true"] > div {
+    .stRadio > div > label:hover {
         border-color: #1f77b4 !important;
-        background: white !important;
     }
 
-    .row-widget.stRadio > div[role="radiogroup"] > label[data-value="true"] > div:after {
-        content: "" !important;
-        width: 10px !important;
-        height: 10px !important;
-        background: #1f77b4 !important;
-        border-radius: 50% !important;
+    .stRadio [data-testid="stMarkdownContainer"] {
+        display: none;
+    }
+    
+    .stRadio {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Satisfaction Scale Styling */
+    .satisfaction-scale {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 10px 10px 10px;
+        color: #555;
+        font-size: 0.9rem;
+    }
+
+    .section-title {
+        color: #1f77b4;
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin: 30px 0 20px 0;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #edf2f7;
+    }
+
+    /* MultiSelect styling */
+    .stMultiSelect {
+        margin-top: 10px;
+    }
+
+    .stMultiSelect > div {
+        background-color: white !important;
+        border: 1px solid #ddd !important;
+        border-radius: 5px !important;
+    }
+
+    .stMultiSelect > div:hover {
+        border-color: #1f77b4 !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -386,6 +377,9 @@ def main():
                 st.session_state.current_step = 5
                 st.rerun()
                  
+    def main():
+    # [Previous heading and steps 1-4 remain exactly the same until step 5]
+    
     elif st.session_state.current_step == 5:
         st.markdown("### 📋 Survey Questions")
         st.markdown(
@@ -400,98 +394,115 @@ def main():
         # Tool Usage section
         st.markdown('<div class="section-title">🛠 Tool Usage and Satisfaction</div>', unsafe_allow_html=True)
         
+        # Duration question
         st.markdown('<div class="question-text">How long have you been using this tool? *</div>', unsafe_allow_html=True)
         usage_duration = st.radio(
-            "Duration",
-            options=['Less than 1 month', '1-3 months', 'More than 3 months'],
+            " ",  # Single space
+            ['Less than 1 month', '1-3 months', 'More than 3 months'],
             horizontal=True,
-            key="duration_radio"
+            key="duration_radio",
+            index=None
         )
         
+        # Satisfaction question
         st.markdown('<div class="question-text">On a scale of 1-5, how satisfied are you with the tool? *</div>', unsafe_allow_html=True)
         st.markdown("""
-            <div style='display: flex; justify-content: space-between; margin-bottom: 10px;'>
+            <div class="satisfaction-scale">
                 <span>Very Dissatisfied</span>
-                <span>Neutral</span>
+                <span style="margin-left: 40px;">Neutral</span>
                 <span>Very Satisfied</span>
             </div>
         """, unsafe_allow_html=True)
         satisfaction = st.radio(
-            "Satisfaction",
-            options=['1', '2', '3', '4', '5'],
+            " ",  # Single space
+            ['1', '2', '3', '4', '5'],
             horizontal=True,
-            key="satisfaction_radio"
+            key="satisfaction_radio",
+            index=None
         )
         
+        # Features question
         st.markdown('<div class="question-text">What aspects of the tool do you find most valuable? (Select all that apply) *</div>', unsafe_allow_html=True)
         features = st.multiselect(
-            "Features",
-            ['Easy to use', 'Reduces manual work', 'Improves accuracy', 'Speeds up processes', 'Other'],
+            " ",  # Single space
+            options=['Easy to use', 'Reduces manual work', 'Improves accuracy', 'Speeds up processes', 'Other'],
             key="features_select"
         )
         
         # Time and Productivity Impact
         st.markdown('<div class="section-title">⏱ Time and Productivity Impact</div>', unsafe_allow_html=True)
         
+        # Time saved question
         st.markdown('<div class="question-text">On average, how much time do you save daily using this tool? *</div>', unsafe_allow_html=True)
         time_saved = st.radio(
-            "Time Saved",
-            options=['30-60 minutes', '1-2 hours', '2-4 hours', 'More than 4 hours'],
+            " ",  # Single space
+            ['30-60 minutes', '1-2 hours', '2-4 hours', 'More than 4 hours'],
             horizontal=True,
-            key="time_saved_radio"
+            key="time_saved_radio",
+            index=None
         )
         
+        # Automation percentage question
         st.markdown('<div class="question-text">What percentage of your previous manual tasks has been automated? *</div>', unsafe_allow_html=True)
         automation_percentage = st.radio(
-            "Automation Percentage",
-            options=['0-25%', '26-50%', '51-75%', '76-100%'],
+            " ",  # Single space
+            ['0-25%', '26-50%', '51-75%', '76-100%'],
             horizontal=True,
-            key="automation_radio"
+            key="automation_radio",
+            index=None
         )
         
+        # Time utilization question
         st.markdown('<div class="question-text">How are you utilizing the time saved through automation? *</div>', unsafe_allow_html=True)
         time_utilization = st.text_area(
-            "Time Utilization",
+            " ",  # Single space
             height=100,
             placeholder="Please describe how you are using the time saved...",
             key="time_util"
         )
         
-        # Process Improvement
+        # Process Improvement section
         st.markdown('<div class="section-title">📈 Process Improvement</div>', unsafe_allow_html=True)
         
+        # Error reduction question
         st.markdown('<div class="question-text">Have you noticed any reduction in errors since using the automation tool? *</div>', unsafe_allow_html=True)
         error_reduction = st.radio(
-            "Error Reduction",
-            options=['Yes', 'No', 'Errors have increased'],
+            " ",  # Single space
+            ['Yes', 'No', 'Errors have increased'],
             horizontal=True,
-            key="error_red"
+            key="error_red",
+            index=None
         )
         
+        # Suggestions question
         st.markdown('<div class="question-text">Do you have any suggestions for improving the tool? *</div>', unsafe_allow_html=True)
         suggestions = st.text_area(
-            "Suggestions",
+            " ",  # Single space
             height=100,
             placeholder="Please share your suggestions for improvement...",
             key="suggestions"
         )
         
+        # Job satisfaction question
         st.markdown('<div class="question-text">How has the automation tool affected your job satisfaction? *</div>', unsafe_allow_html=True)
         job_satisfaction = st.radio(
-            "Job Satisfaction",
-            options=['Positively', 'No Change', 'Negatively'],
+            " ",  # Single space
+            ['Positively', 'No Change', 'Negatively'],
             horizontal=True,
-            key="job_satisfaction"
+            key="job_satisfaction",
+            index=None
         )
         
+        # Additional feedback question
         st.markdown('<div class="question-text">Additional comments or feedback (Optional):</div>', unsafe_allow_html=True)
         additional_feedback = st.text_area(
-            "Additional Feedback",
+            " ",  # Single space
             height=100,
             placeholder="Please share any additional feedback...",
             key="feedback"
         )
         
+        # Navigation buttons
         col1, col2 = st.columns(2)
         with col1:
             if st.button("← Back"):
@@ -501,6 +512,8 @@ def main():
             if st.button("Submit"):
                 if not features:
                     st.error("Please select at least one valuable feature")
+                elif not usage_duration or not satisfaction or not time_saved or not automation_percentage or not time_utilization or not error_reduction or not job_satisfaction:
+                    st.error("Please answer all required questions marked with *")
                 else:
                     response = {
                         'department': st.session_state.department,
