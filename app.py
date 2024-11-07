@@ -2,12 +2,16 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 import time
+import os
 
 # Initialize session state variables
 if 'current_step' not in st.session_state:
     st.session_state.current_step = 1
 if 'responses' not in st.session_state:
-    st.session_state.responses = []
+    if os.path.exists('/mnt/data/survey_responses.csv'):
+        st.session_state.responses = pd.read_csv('/mnt/data/survey_responses.csv').to_dict('records')
+    else:
+        st.session_state.responses = []
 if 'admin_authenticated' not in st.session_state:
     st.session_state.admin_authenticated = False
 
@@ -167,6 +171,11 @@ if hasattr(st, 'secrets') and 'general' in st.secrets:
         ADMIN_PASSWORD = st.secrets["general"]["admin_password"]
     except:
         pass
+
+# Function to save responses to CSV
+def save_responses_to_csv():
+    df = pd.DataFrame(st.session_state.responses)
+    df.to_csv('/mnt/data/survey_responses.csv', index=False)
 
 # Add system-tool mapping
 SYSTEM_TOOL_MAPPING = {
@@ -498,7 +507,7 @@ def main():
                     st.session_state.current_step = 6
                     st.rerun()
 
-    elif st.session_state.current_step == 6:
+    if st.session_state.current_step == 6:
         st.markdown("""
             <div class='success-message'>
                 <h2>🎉 Thank you!</h2>
@@ -509,18 +518,19 @@ def main():
         """, unsafe_allow_html=True)
         st.balloons()
         
+        # Save response to CSV for persistence
+        save_responses_to_csv()
+        
         # Center the button
         col1, col2, col3 = st.columns([1,2,1])
         with col2:
-            if st.button("📝 Submit Another Response"):
+            if st.button("📜 Submit Another Response"):
                 show_spinner_with_message("Preparing new survey...")
                 reset_form()
                 st.rerun()
 
-    st.markdown('</div>', unsafe_allow_html=True)
-
     # Enhanced Admin view
-    with st.expander("🔐 Admin View (Password Protected)"):
+    with st.expander("🔒 Admin View (Password Protected)"):
         if check_admin_password():
             st.markdown("""
                 <div style='background-color: #f8f9fa; padding: 15px; border-radius: 10px;'>
@@ -532,7 +542,7 @@ def main():
                 show_spinner_with_message("Logging out...")
                 st.session_state.admin_authenticated = False
                 st.rerun()
-                
+            
             if st.session_state.responses:
                 df = pd.DataFrame(st.session_state.responses)
                 st.dataframe(df)
@@ -542,7 +552,7 @@ def main():
                 with col2:
                     csv = df.to_csv(index=False).encode('utf-8')
                     st.download_button(
-                        "📥 Download Responses (CSV)",
+                        "📅 Download Responses (CSV)",
                         csv,
                         "survey_responses.csv",
                         "text/csv",
