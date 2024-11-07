@@ -19,35 +19,54 @@ if hasattr(st, 'secrets') and 'general' in st.secrets:
     except:
         pass
 
-# Initialize session state
-if 'current_step' not in st.session_state:
-    st.session_state.current_step = 1
-if 'responses' not in st.session_state:
-    st.session_state.responses = []
-if 'admin_authenticated' not in st.session_state:
-    st.session_state.admin_authenticated = False
+# Add system-tool mapping
+SYSTEM_TOOL_MAPPING = {
+    'TSG': {
+        'RA Invoice Tracker': ['RVS0F5C', 'RVS0F42', 'RVS1034'],
+        'RA PO Extraction Tool': ['Not Installed ', 'Not Installed', 'Not Installed']
+        'Telecom RAN KPI': ['Developed but Not Installed ', 'Developed but Not Installed']
+    },
+    'Finance': {
+        'SMS & Tally Fnf Reco': ['RVS120A', 'RVS1094'],
+        'Samsung Collections Reco': ['Not Installed', 'Not Installed', 'Not Installed']
+    },
+    'CSD': {
+        'STN MIS Update Tool': ['RVSBF0', 'RVS0E77'],
+        'Realme Claim Update Tool': ['In Development', 'In Development']
+        'RV SMS Claim Update Tool': ['In Development', 'In Development']
+    }
+}
 
 # Your company data
 DEPARTMENT_DATA = {
     'Finance': {
         'tools': {
-            'Invoice Automation': ['John Doe', 'Jane Smith'],
-            'Expense Reporter': ['Alice Brown', 'Charlie Davis']
+            'SMS & Tally Fnf Reco': ['Anmol Dubey', 'Shruti Dixit'],
+            'Samsung Collections Reco': ['NA', 'NA']
         }
     },
-    'HR': {
+    'CSD': {
         'tools': {
-            'Recruitment Tracker': ['Eva Green', 'Frank White'],
-            'Onboarding System': ['Grace Lee', 'Henry Ford']
+            'STN MIS Update Tool': ['Inderjeet', 'Dushyant Kumar'],
+            'Realme Claim Update Tool': ['Hari Kishan', 'Mohit Senger']
+            'RV SMS Claim Update Tool': ['Hari Kishan', 'Mohit Senger']
         }
     },
-    'IT': {
+    'TSG': {
         'tools': {
-            'Service Desk': ['Ivan Black', 'Julia Red'],
-            'Monitoring Tool': ['Karl Blue', 'Lisa Green']
+            'RA Invoice Tracker': ['Rekha Pujari', 'Kokil Goswami', 'Sonika'],
+            'RA PO Extraction Tool': ['NA', 'NA']
+            'Telecom RAN KPI': ['NA', 'NA']
         }
     }
 }
+
+def check_system_number(department, tool, system_number):
+    """Check if the system number is valid for the selected department and tool"""
+    if department in SYSTEM_TOOL_MAPPING and tool in SYSTEM_TOOL_MAPPING[department]:
+        valid_systems = SYSTEM_TOOL_MAPPING[department][tool]
+        return system_number in valid_systems
+    return False
 
 def check_admin_password():
     """Check if admin password is correct"""
@@ -73,7 +92,7 @@ def main():
     st.title("🤖 Automation Tools Survey")
     
     # Progress bar
-    if st.session_state.current_step < 6:  # Only show progress bar before completion
+    if st.session_state.current_step < 6:
         st.progress(st.session_state.current_step / 5)
         st.write(f"Step {st.session_state.current_step} of 5")
     
@@ -128,11 +147,22 @@ def main():
     elif st.session_state.current_step == 4:
         st.subheader("💻 System Information")
         st.info(f"Department: {st.session_state.department} | Tool: {st.session_state.tool} | User: {st.session_state.user}")
+        
+        # Show valid system numbers for reference (remove in production)
+        if st.session_state.department in SYSTEM_TOOL_MAPPING and st.session_state.tool in SYSTEM_TOOL_MAPPING[st.session_state.department]:
+            valid_systems = SYSTEM_TOOL_MAPPING[st.session_state.department][st.session_state.tool]
+            st.caption(f"Valid system numbers for testing: {', '.join(valid_systems)}")
+        
         system_number = st.text_input("Enter your system number:")
         
-        is_valid = len(system_number) >= 5 if system_number else False
-        if system_number and not is_valid:
-            st.warning("System number should be at least 5 characters long")
+        is_valid_format = len(system_number) >= 5 if system_number else False
+        is_valid_system = check_system_number(st.session_state.department, st.session_state.tool, system_number)
+        
+        if system_number:
+            if not is_valid_format:
+                st.warning("System number should be at least 5 characters long")
+            elif not is_valid_system:
+                st.error(f"❌ The tool '{st.session_state.tool}' is not installed on system {system_number}. Please contact IT support if you believe this is an error.")
             
         col1, col2 = st.columns(2)
         with col1:
@@ -140,7 +170,7 @@ def main():
                 st.session_state.current_step = 3
                 st.rerun()
         with col2:
-            if st.button("Next", disabled=not is_valid):
+            if st.button("Next", disabled=not (is_valid_format and is_valid_system)):
                 st.session_state.system_number = system_number
                 st.session_state.current_step = 5
                 st.rerun()
@@ -149,30 +179,63 @@ def main():
         st.subheader("📋 Survey Questions")
         st.info(f"Department: {st.session_state.department} | Tool: {st.session_state.tool} | User: {st.session_state.user}")
         
-        time_saved = st.select_slider(
-            "How much time do you save daily using this tool?",
-            options=['Less than 30 mins', '30-60 mins', '1-2 hours', '2-4 hours', 'More than 4 hours']
+        # 🛠 Tool Usage and Satisfaction
+        st.subheader("🛠 Tool Usage and Satisfaction")
+        
+        usage_duration = st.radio(
+            "How long have you been using this tool?",
+            options=['Less than 1 month', '1-3 months', 'More than 3 months'],
+            required=True
         )
         
         satisfaction = st.slider(
-            "How satisfied are you with the tool?",
-            1, 5, 3,
-            help="1: Very Dissatisfied, 5: Very Satisfied"
+            "On a scale of 1-5, how satisfied are you with the tool? (1 = Very Dissatisfied, 5 = Very Satisfied)",
+            1, 5, 3
         )
         
         features = st.multiselect(
-            "What features do you find most valuable?",
-            ['Easy to use', 'Reduces manual work', 'Improves accuracy', 'Speeds up processes', 
-             'Better organization', 'Cost savings']
+            "What aspects of the tool do you find most valuable? (Select all that apply)",
+            ['Easy to use', 'Reduces manual work', 'Improves accuracy', 'Speeds up processes', 'Other']
         )
         
-        new_skills = st.text_area(
-            "What new skills have you developed since using this tool?",
+        # ⏱ Time and Productivity Impact
+        st.subheader("⏱ Time and Productivity Impact")
+        
+        time_saved = st.select_slider(
+            "On average, how much time do you save daily by using this tool?",
+            options=['30-60 minutes', '1-2 hours', '2-4 hours', 'More than 4 hours']
+        )
+        
+        automation_percentage = st.select_slider(
+            "What percentage of your previous manual tasks has been automated?",
+            options=['0-25%', '26-50%', '51-75%', '76-100%']
+        )
+        
+        time_utilization = st.text_area(
+            "How are you utilizing the time saved through automation?",
             height=100
         )
         
+        # 📈 Process Improvement
+        st.subheader("📈 Process Improvement")
+        
+        error_reduction = st.radio(
+            "Have you noticed any reduction in errors since using the automation tool?",
+            options=['Yes', 'No', 'Errors have increased']
+        )
+        
         suggestions = st.text_area(
-            "Do you have any suggestions for improvement?",
+            "Do you have any suggestions for improving the tool?",
+            height=100
+        )
+        
+        job_satisfaction = st.radio(
+            "How has the automation tool affected your job satisfaction?",
+            options=['Positively', 'No Change', 'Negatively']
+        )
+        
+        additional_feedback = st.text_area(
+            "Please share any additional comments or feedback about your experience with the automation tool: (Optional)",
             height=100
         )
         
@@ -191,11 +254,16 @@ def main():
                         'tool': st.session_state.tool,
                         'user': st.session_state.user,
                         'system_number': st.session_state.system_number,
-                        'time_saved': time_saved,
+                        'usage_duration': usage_duration,
                         'satisfaction': satisfaction,
                         'valuable_features': ', '.join(features),
-                        'new_skills': new_skills,
+                        'time_saved': time_saved,
+                        'automation_percentage': automation_percentage,
+                        'time_utilization': time_utilization,
+                        'error_reduction': error_reduction,
                         'suggestions': suggestions,
+                        'job_satisfaction': job_satisfaction,
+                        'additional_feedback': additional_feedback,
                         'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     }
                     
