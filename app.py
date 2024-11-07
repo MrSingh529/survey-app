@@ -51,7 +51,7 @@ st.markdown("""
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         margin-bottom: 2rem;
     }
-
+    
     .step-container {
         padding: 20px;
         border-radius: 10px;
@@ -101,8 +101,7 @@ st.markdown("""
         font-size: 1.1rem;
         font-weight: 500;
         color: #2c3e50;
-        margin-bottom: 0.5rem;
-        padding: 10px 0;
+        margin: 1.5rem 0 1rem 0;
     }
 
     .stTextArea textarea {
@@ -117,54 +116,31 @@ st.markdown("""
         box-shadow: 0 0 0 1px #1f77b4 !important;
     }
 
-    /* Clean Radio Button Styling */
+    /* Updated Radio Button Styling for Vertical Layout */
     .stRadio > div {
-        gap: 20px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        padding: 10px 0 !important;
     }
     
     .stRadio > div > label {
-        padding: 10px !important;
-        background: white !important;
-        border: 1px solid #ddd !important;
+        padding: 8px 15px !important;
+        cursor: pointer !important;
         border-radius: 4px !important;
-        min-width: 40px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-
-    .stRadio > div > label:hover {
-        border-color: #1f77b4 !important;
-    }
-
-    .stRadio [data-testid="stMarkdownContainer"] {
-        display: none;
-    }
-    
-    .stRadio {
-        padding: 0 !important;
+        transition: background-color 0.2s !important;
         margin: 0 !important;
     }
 
-    /* Satisfaction Scale Styling */
-    .satisfaction-scale {
-        display: flex;
-        justify-content: space-between;
-        margin: 0 10px 10px 10px;
-        color: #555;
-        font-size: 0.9rem;
+    .stRadio > div > label:hover {
+        background-color: #f0f7ff !important;
     }
 
-    .section-title {
-        color: #1f77b4;
-        font-size: 1.3rem;
-        font-weight: 600;
-        margin: 30px 0 20px 0;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #edf2f7;
+    .stRadio [data-testid="stMarkdownContainer"] {
+        display: none !important;
     }
 
-    /* MultiSelect styling */
+    /* MultiSelect Styling */
     .stMultiSelect {
         margin-top: 10px;
     }
@@ -175,8 +151,13 @@ st.markdown("""
         border-radius: 5px !important;
     }
 
-    .stMultiSelect > div:hover {
-        border-color: #1f77b4 !important;
+    .section-title {
+        color: #1f77b4;
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin: 30px 0 20px 0;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #edf2f7;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -396,7 +377,6 @@ def main():
         usage_duration = st.radio(
             " ",  # Single space
             ['Less than 1 month', '1-3 months', 'More than 3 months'],
-            horizontal=True,
             key="duration_radio",
             index=None
         )
@@ -413,7 +393,6 @@ def main():
         satisfaction = st.radio(
             " ",  # Single space
             ['1', '2', '3', '4', '5'],
-            horizontal=True,
             key="satisfaction_radio",
             index=None
         )
@@ -434,7 +413,6 @@ def main():
         time_saved = st.radio(
             " ",  # Single space
             ['30-60 minutes', '1-2 hours', '2-4 hours', 'More than 4 hours'],
-            horizontal=True,
             key="time_saved_radio",
             index=None
         )
@@ -444,7 +422,6 @@ def main():
         automation_percentage = st.radio(
             " ",  # Single space
             ['0-25%', '26-50%', '51-75%', '76-100%'],
-            horizontal=True,
             key="automation_radio",
             index=None
         )
@@ -466,7 +443,6 @@ def main():
         error_reduction = st.radio(
             " ",  # Single space
             ['Yes', 'No', 'Errors have increased'],
-            horizontal=True,
             key="error_red",
             index=None
         )
@@ -485,7 +461,6 @@ def main():
         job_satisfaction = st.radio(
             " ",  # Single space
             ['Positively', 'No Change', 'Negatively'],
-            horizontal=True,
             key="job_satisfaction",
             index=None
         )
