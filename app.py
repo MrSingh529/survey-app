@@ -13,7 +13,7 @@ if 'admin_authenticated' not in st.session_state:
 
 # Custom CSS for better styling
 st.set_page_config(
-    page_title="Automation Tools Survey",
+    page_title="🤖 Automation Tools Survey",
     page_icon="🤖",
     layout="centered"
 )
@@ -253,7 +253,7 @@ def main():
                 color: #1f77b4;
                 text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             '>
-                🤖 RV Solutions
+                RV Solutions
             </h1>
             <h2 style='
                 font-size: 1.8rem;
@@ -261,7 +261,7 @@ def main():
                 color: #2ecc71;
                 margin-bottom: 2rem;
             '>
-                Automation Tools Survey
+                🤖 Automation Tools Survey
             </h2>
         </div>
     """, unsafe_allow_html=True)
