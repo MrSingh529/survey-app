@@ -136,10 +136,6 @@ st.markdown("""
         background-color: #f0f7ff !important;
     }
 
-    .stRadio [data-testid="stMarkdownContainer"] {
-        display: none !important;
-    }
-
     /* MultiSelect Styling */
     .stMultiSelect {
         margin-top: 10px;
