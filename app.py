@@ -10,23 +10,13 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS to improve appearance
-st.markdown("""
-    <style>
-    .stButton>button {
-        width: 100%;
-    }
-    .stProgress .st-bo {
-        background-color: #00cc00;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
 # Initialize session state
 if 'current_step' not in st.session_state:
     st.session_state.current_step = 1
+if 'responses' not in st.session_state:
+    st.session_state.responses = []
 
-# Your company data - Replace with actual data
+# Your company data
 DEPARTMENT_DATA = {
     'Finance': {
         'tools': {
@@ -49,34 +39,49 @@ DEPARTMENT_DATA = {
 }
 
 def save_response(responses):
-    """Save survey responses to a CSV file"""
+    """Save survey response to session state"""
     try:
-        # Convert the responses dictionary to a DataFrame
-        df = pd.DataFrame([responses])
-        
-        # Add timestamp
-        df['timestamp'] = datetime.now()
-        
-        # In Streamlit Cloud, we'll need to use st.session_state to store responses
-        if 'all_responses' not in st.session_state:
-            st.session_state.all_responses = df
-        else:
-            st.session_state.all_responses = pd.concat([st.session_state.all_responses, df])
-        
-        # Download option will be provided at the end
+        st.session_state.responses.append({
+            **responses,
+            'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        })
         return True
     except Exception as e:
-        st.error(f"Error saving responses: {str(e)}")
+        st.error(f"Error saving response: {str(e)}")
         return False
 
+def show_responses():
+    """Display all responses in a table"""
+    if st.session_state.responses:
+        df = pd.DataFrame(st.session_state.responses)
+        st.dataframe(df)
+        
+        # Convert to CSV for download
+        csv = df.to_csv(index=False).encode('utf-8')
+        st.download_button(
+            "Download Responses as CSV",
+            csv,
+            "survey_responses.csv",
+            "text/csv",
+            key='download-csv'
+        )
+    else:
+        st.info("No responses collected yet.")
+
 def main():
-    # Title with emoji and styling
+    # Title with emoji
     st.markdown("""
         <h1 style='text-align: center; color: #1f77b4;'>
             🤖 Automation Tools Survey
         </h1>
     """, unsafe_allow_html=True)
     
+    # Admin view for responses
+    if st.sidebar.checkbox("Show Admin View"):
+        st.sidebar.subheader("Survey Responses")
+        show_responses()
+        return
+
     # Progress bar
     progress_text = f"Step {st.session_state.current_step} of 5"
     st.progress(st.session_state.current_step / 5)
@@ -215,24 +220,13 @@ def main():
                         st.success("🎉 Thank you! Your survey has been submitted successfully.")
                         st.balloons()
                         
-                        # Provide download option for admin
-                        if 'all_responses' in st.session_state:
-                            csv = st.session_state.all_responses.to_csv(index=False)
-                            st.download_button(
-                                "Download All Responses",
-                                csv,
-                                "survey_responses.csv",
-                                "text/csv",
-                                key='download-csv'
-                            )
-                        
-                        # Reset session state for new survey
-                        for key in list(st.session_state.keys()):
-                            if key != 'all_responses':
-                                del st.session_state[key]
-                        st.session_state.current_step = 1
-                        
                         if st.button("Submit Another Response"):
+                            # Reset form-related session state
+                            keys_to_keep = ['responses']
+                            for key in list(st.session_state.keys()):
+                                if key not in keys_to_keep:
+                                    del st.session_state[key]
+                            st.session_state.current_step = 1
                             st.rerun()
 
 if __name__ == "__main__":
