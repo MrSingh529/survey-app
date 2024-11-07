@@ -2,18 +2,22 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
-# Page configuration
+# Move page configuration to the very top
 st.set_page_config(
     page_title="Automation Tools Survey",
     page_icon="🤖",
     layout="centered"
 )
 
-# Use secrets if available, otherwise fall back to default password
-try:
-    ADMIN_PASSWORD = st.secrets["general"]["admin_password"]
-except:
-    ADMIN_PASSWORD = "@RVsolutions@1234"  # Fallback password
+# Default password if secrets are not set up
+ADMIN_PASSWORD = "@RVsolutions@1234"
+
+# Try to get password from secrets if available
+if hasattr(st, 'secrets') and 'general' in st.secrets:
+    try:
+        ADMIN_PASSWORD = st.secrets["general"]["admin_password"]
+    except:
+        pass
 
 # Initialize session state
 if 'current_step' not in st.session_state:
