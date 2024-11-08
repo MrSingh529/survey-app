@@ -249,9 +249,12 @@ def reset_form():
             del st.session_state[key]
 
 def main():
-    # Add Logo
-    st.image('logo.png', use_column_width=True)
-    # Updated Title and Heading without company name
+    # Add Logo with controlled size
+    col1, col2, col3 = st.columns([1,2,1])
+    with col2:
+        st.image('logo.png', width=200)  # Adjust width to 200 pixels
+    
+    # Title and Heading
     st.markdown("""
         <div style='padding: 1.5rem 0; text-align: center;'>
             <h2 style='
