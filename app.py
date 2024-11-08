@@ -256,15 +256,6 @@ def main():
     # Title and Heading with company name
     st.markdown("""
         <div style='padding: 1.5rem 0; text-align: center;'>
-            <h1 style='
-                font-size: 2.5rem;
-                font-weight: 800;
-                margin-bottom: 1rem;
-                color: #1f77b4;
-                text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            '>
-                RV Solutions
-            </h1>
             <h2 style='
                 font-size: 1.8rem;
                 font-weight: 600;
