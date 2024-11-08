@@ -251,6 +251,8 @@ def reset_form():
             del st.session_state[key]
 
 def main():
+    # Add Logo
+    st.image('logo.png', use_column_width=True)
     # Title and Heading with company name
     st.markdown("""
         <div style='padding: 1.5rem 0; text-align: center;'>
