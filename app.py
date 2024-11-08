@@ -120,7 +120,6 @@ st.markdown("""
         box-shadow: 0 0 0 1px #1f77b4 !important;
     }
 
-    /* Updated Radio Button Styling for Vertical Layout */
     .stRadio > div {
         display: flex !important;
         flex-direction: column !important;
@@ -140,7 +139,6 @@ st.markdown("""
         background-color: #f0f7ff !important;
     }
 
-    /* MultiSelect Styling */
     .stMultiSelect {
         margin-top: 10px;
     }
@@ -253,7 +251,7 @@ def reset_form():
 def main():
     # Add Logo
     st.image('logo.png', use_column_width=True)
-    # Title and Heading with company name
+    # Updated Title and Heading without company name
     st.markdown("""
         <div style='padding: 1.5rem 0; text-align: center;'>
             <h2 style='
