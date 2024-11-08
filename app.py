@@ -252,7 +252,7 @@ def main():
     # Add Logo with controlled size
     col1, col2, col3 = st.columns([1,2,1])
     with col2:
-        st.image('logo.png', width=200)  # Adjust width to 200 pixels
+        st.image('logo.png', width=300)  # Adjust width to 200 pixels
     
     # Title and Heading
     st.markdown("""
