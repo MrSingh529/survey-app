@@ -180,7 +180,8 @@ SYSTEM_TOOL_MAPPING = {
     'TSG': {
         'RA Invoice Tracker': ['RVS0F5C', 'RVS0F42', 'RVS1034'],
         'RA PO Extraction Tool': ['Not Installed', 'Not Installed', 'Not Installed'],
-        'Telecom RAN KPI': ['Developed but Not Installed', 'Developed but Not Installed']
+        'Telecom RAN KPI': ['Developed but Not Installed', 'Developed but Not Installed'],
+        'RV PermitFlow (PTW App)': ['RVS104C', 'RV Employee', 'Partner']
     },
     'Finance': {
         'SMS & Tally Fnf Reco': ['RVS120A', 'RVS1094'],
@@ -189,7 +190,10 @@ SYSTEM_TOOL_MAPPING = {
     'CSD': {
         'STN MIS Update Tool': ['RVSBF0', 'RVS0E77'],
         'Realme Claim Update Tool': ['In Development', 'In Development'],
-        'RV SMS Claim Update Tool': ['In Development', 'In Development']
+        'RV SMS Claim Update Tool': ['In Development', 'In Development'],
+        'GR Invoice Generator': ['RVS0E7F'],
+        'Inventory & OOW Report Automation': ['RVS0E7F'],
+        'IW Invoice Generator': ['RVS0E7F']
     }
 }
 
@@ -205,14 +209,18 @@ DEPARTMENT_DATA = {
         'tools': {
             'STN MIS Update Tool': ['Inderjeet', 'Dushyant Kumar'],
             'Realme Claim Update Tool': ['Hari Kishan', 'Mohit Senger'],
-            'RV SMS Claim Update Tool': ['Hari Kishan', 'Mohit Senger']
+            'RV SMS Claim Update Tool': ['Hari Kishan', 'Mohit Senger'],
+            'GR Invoice Generator': ['Zasim'],
+            'Inventory & OOW Report Automation': ['Zasim'],
+            'IW Invoice Generator': ['Zasim']
         }
     },
     'TSG': {
         'tools': {
             'RA Invoice Tracker': ['Rekha Pujari', 'Kokil Goswami', 'Sonika'],
             'RA PO Extraction Tool': ['NA', 'NA'],
-            'Telecom RAN KPI': ['NA', 'NA']
+            'Telecom RAN KPI': ['NA', 'NA'],
+            'RV PermitFlow (PTW App)': ['Richa Babbar', 'RV Employee', 'Partner']
         }
     }
 }
