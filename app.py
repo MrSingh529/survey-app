@@ -366,109 +366,260 @@ def main():
                 st.rerun()
     
     elif st.session_state.current_step == 5:
-        st.markdown("### 📋 Survey Questions")
-        st.markdown(
-            f'<div class="info-box">'
-            f'Department: {st.session_state.department} | '
-            f'Tool: {st.session_state.tool} | '
-            f'User: {st.session_state.user}'
-            f'</div>', 
-            unsafe_allow_html=True
-        )
-        
-        # Tool Usage section
+    st.markdown("### 📋 Survey Questions")
+    st.markdown(
+        f'<div class="info-box">'
+        f'Department: {st.session_state.department} | '
+        f'Tool: {st.session_state.tool} | '
+        f'User: {st.session_state.user}'
+        f'</div>', 
+        unsafe_allow_html=True
+    )
+
+    # Initialize response dictionary
+    response = {}
+
+    if st.session_state.tool == "RV PermitFlow (PTW App)":
+        # PTW-specific questions
+        # Tool Usage and Satisfaction
         st.markdown('<div class="section-title">🛠 Tool Usage and Satisfaction</div>', unsafe_allow_html=True)
         
-        # Duration question
-        st.markdown('<div class="question-text">How long have you been using this tool? *</div>', unsafe_allow_html=True)
-        usage_duration = st.radio(
-            " ",  # Single space
-            ['Less than 1 month', '1-3 months', 'More than 3 months'],
-            key="duration_radio",
+        st.markdown('<div class="question-text">How frequently do you use the PTW automation tool? *</div>', unsafe_allow_html=True)
+        ptw_frequency = st.radio(
+            " ", 
+            ['Daily', 'Weekly', 'Occasionally', 'Rarely', 'Never'],
+            key="ptw_frequency_radio",
             index=None
         )
         
-        # Satisfaction question
-        st.markdown('<div class="question-text">On a scale of 1-5, how satisfied are you with the tool? (1 = Very Dissatisfied, 5 = Very Satisfied) *</div>', unsafe_allow_html=True)
-        satisfaction = st.radio(
-            " ",  # Single space
+        st.markdown('<div class="question-text">How satisfied are you with the PTW automation tool\'s user interface? (1 = Very Dissatisfied, 5 = Very Satisfied) *</div>', unsafe_allow_html=True)
+        ptw_ui_satisfaction = st.radio(
+            " ", 
             ['1', '2', '3', '4', '5'],
-            key="satisfaction_radio",
+            key="ptw_ui_satisfaction_radio",
             index=None
         )
         
-        # Features question
-        st.markdown('<div class="question-text">What aspects of the tool do you find most valuable? (Select all that apply) *</div>', unsafe_allow_html=True)
-        features = st.multiselect(
-            " ",  # Single space
-            options=['Easy to use', 'Reduces manual work', 'Improves accuracy', 'Speeds up processes', 'Other'],
-            key="features_select"
+        st.markdown('<div class="question-text">What improvements would you suggest for the PTW automation tool\'s usability? *</div>', unsafe_allow_html=True)
+        ptw_usability_improvements = st.text_area(
+            " ", 
+            height=100,
+            placeholder="Please share your suggestions for usability improvements...",
+            key="ptw_usability_improvements"
+        )
+        
+        st.markdown('<div class="question-text">How well does the PTW automation tool handle the most common PTW processes? *</div>', unsafe_allow_html=True)
+        ptw_process_handling = st.radio(
+            " ", 
+            ['Very well', 'Adequately', 'Needs improvement', 'Not effective'],
+            key="ptw_process_handling_radio",
+            index=None
         )
         
         # Time and Productivity Impact
         st.markdown('<div class="section-title">⏱ Time and Productivity Impact</div>', unsafe_allow_html=True)
         
-        # Time saved question
+        st.markdown('<div class="question-text">On average, how much time do you save per PTW task due to automation? *</div>', unsafe_allow_html=True)
+        ptw_time_saved = st.radio(
+            " ", 
+            ['10-30 minutes', '30 minutes to 1 hour', '1-2 hours', 'More than 2 hours'],
+            key="ptw_time_saved_radio",
+            index=None
+        )
+        
+        st.markdown('<div class="question-text">Has the PTW automation tool helped in reducing manual errors or delays in PTW processing? *</div>', unsafe_allow_html=True)
+        ptw_error_reduction = st.radio(
+            " ", 
+            ['Significantly', 'Moderately', 'Slightly', 'Not at all'],
+            key="ptw_error_reduction_radio",
+            index=None
+        )
+        
+        st.markdown('<div class="question-text">How has the PTW automation impacted your overall workflow? *</div>', unsafe_allow_html=True)
+        ptw_workflow_impact = st.radio(
+            " ", 
+            ['Improved efficiency', 'Streamlined communication', 'Reduced stress', 'No significant change'],
+            key="ptw_workflow_impact_radio",
+            index=None
+        )
+        
+        # System Performance & Support
+        st.markdown('<div class="section-title">⚙ System Performance & Support</div>', unsafe_allow_html=True)
+        
+        st.markdown('<div class="question-text">Have you encountered any technical issues or bugs while using the PTW automation tool? *</div>', unsafe_allow_html=True)
+        ptw_technical_issues = st.radio(
+            " ", 
+            ['Yes, frequently', 'Yes, occasionally', 'No issues encountered'],
+            key="ptw_technical_issues_radio",
+            index=None
+        )
+        
+        st.markdown('<div class="question-text">How would you rate the support provided for the PTW automation tool? *</div>', unsafe_allow_html=True)
+        ptw_support_rating = st.radio(
+            " ", 
+            ['Excellent', 'Good', 'Fair', 'Poor'],
+            key="ptw_support_rating_radio",
+            index=None
+        )
+        
+        st.markdown('<div class="question-text">How easy was it to adapt to the PTW automation tool compared to the manual process? *</div>', unsafe_allow_html=True)
+        ptw_adaptation_ease = st.radio(
+            " ", 
+            ['Very easy', 'Easy', 'Neutral', 'Difficult', 'Very difficult'],
+            key="ptw_adaptation_ease_radio",
+            index=None
+        )
+        
+        # Overall Feedback and Future Use
+        st.markdown('<div class="section-title">📝 Overall Feedback and Future Use</div>', unsafe_allow_html=True)
+        
+        st.markdown('<div class="question-text">Do you feel that the PTW automation tool has improved the overall PTW process efficiency in your department? *</div>', unsafe_allow_html=True)
+        ptw_process_efficiency = st.radio(
+            " ", 
+            ['Strongly agree', 'Agree', 'Neutral', 'Disagree', 'Strongly disagree'],
+            key="ptw_process_efficiency_radio",
+            index=None
+        )
+        
+        st.markdown('<div class="question-text">Would you recommend the PTW automation tool to others in your department or organization? *</div>', unsafe_allow_html=True)
+        ptw_recommendation = st.radio(
+            " ", 
+            ['Yes', 'No', 'Not sure'],
+            key="ptw_recommendation_radio",
+            index=None
+        )
+        
+        st.markdown('<div class="question-text">What additional features or improvements would you like to see in future versions of the PTW automation tool? *</div>', unsafe_allow_html=True)
+        ptw_future_improvements = st.text_area(
+            " ", 
+            height=100,
+            placeholder="Please share your suggestions for future improvements...",
+            key="ptw_future_improvements"
+        )
+        
+        # Navigation buttons
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("← Back"):
+                st.session_state.current_step = 4
+                st.rerun()
+        with col2:
+            if st.button("Submit"):
+                required_fields = [
+                    ptw_frequency, ptw_ui_satisfaction, ptw_usability_improvements, ptw_process_handling,
+                    ptw_time_saved, ptw_error_reduction, ptw_workflow_impact, ptw_technical_issues,
+                    ptw_support_rating, ptw_adaptation_ease, ptw_process_efficiency, ptw_recommendation,
+                    ptw_future_improvements
+                ]
+                if not all(required_fields):
+                    st.error("Please answer all required questions marked with *")
+                else:
+                    response = {
+                        'department': st.session_state.department,
+                        'tool': st.session_state.tool,
+                        'user': st.session_state.user,
+                        'system_number': st.session_state.system_number,
+                        'ptw_frequency': ptw_frequency,
+                        'ptw_ui_satisfaction': ptw_ui_satisfaction,
+                        'ptw_usability_improvements': ptw_usability_improvements,
+                        'ptw_process_handling': ptw_process_handling,
+                        'ptw_time_saved': ptw_time_saved,
+                        'ptw_error_reduction': ptw_error_reduction,
+                        'ptw_workflow_impact': ptw_workflow_impact,
+                        'ptw_technical_issues': ptw_technical_issues,
+                        'ptw_support_rating': ptw_support_rating,
+                        'ptw_adaptation_ease': ptw_adaptation_ease,
+                        'ptw_process_efficiency': ptw_process_efficiency,
+                        'ptw_recommendation': ptw_recommendation,
+                        'ptw_future_improvements': ptw_future_improvements,
+                        'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    }
+                    st.session_state.responses.append(response)
+                    st.session_state.current_step = 6
+                    st.rerun()
+
+    else:
+        # General questions for other tools
+        st.markdown('<div class="section-title">🛠 Tool Usage and Satisfaction</div>', unsafe_allow_html=True)
+        
+        st.markdown('<div class="question-text">How long have you been using this tool? *</div>', unsafe_allow_html=True)
+        usage_duration = st.radio(
+            " ", 
+            ['Less than 1 month', '1-3 months', 'More than 3 months'],
+            key="duration_radio",
+            index=None
+        )
+        
+        st.markdown('<div class="question-text">On a scale of 1-5, how satisfied are you with the tool? (1 = Very Dissatisfied, 5 = Very Satisfied) *</div>', unsafe_allow_html=True)
+        satisfaction = st.radio(
+            " ", 
+            ['1', '2', '3', '4', '5'],
+            key="satisfaction_radio",
+            index=None
+        )
+        
+        st.markdown('<div class="question-text">What aspects of the tool do you find most valuable? (Select all that apply) *</div>', unsafe_allow_html=True)
+        features = st.multiselect(
+            " ", 
+            options=['Easy to use', 'Reduces manual work', 'Improves accuracy', 'Speeds up processes', 'Other'],
+            key="features_select"
+        )
+        
+        st.markdown('<div class="section-title">⏱ Time and Productivity Impact</div>', unsafe_allow_html=True)
+        
         st.markdown('<div class="question-text">On average, how much time do you save daily using this tool? *</div>', unsafe_allow_html=True)
         time_saved = st.radio(
-            " ",  # Single space
+            " ", 
             ['30-60 minutes', '1-2 hours', '2-4 hours', 'More than 4 hours'],
             key="time_saved_radio",
             index=None
         )
         
-        # Automation percentage question
         st.markdown('<div class="question-text">What percentage of your previous manual tasks has been automated? *</div>', unsafe_allow_html=True)
         automation_percentage = st.radio(
-            " ",  # Single space
+            " ", 
             ['0-25%', '26-50%', '51-75%', '76-100%'],
             key="automation_radio",
             index=None
         )
         
-        # Time utilization question
         st.markdown('<div class="question-text">How are you utilizing the time saved through automation? *</div>', unsafe_allow_html=True)
         time_utilization = st.text_area(
-            " ",  # Single space
+            " ", 
             height=100,
             placeholder="Please describe how you are using the time saved...",
             key="time_util"
         )
         
-        # Process Improvement section
         st.markdown('<div class="section-title">📈 Process Improvement</div>', unsafe_allow_html=True)
         
-        # Error reduction question
         st.markdown('<div class="question-text">Have you noticed any reduction in errors since using the automation tool? *</div>', unsafe_allow_html=True)
         error_reduction = st.radio(
-            " ",  # Single space
+            " ", 
             ['Yes', 'No', 'Errors have increased'],
             key="error_red",
             index=None
         )
         
-        # Suggestions question
         st.markdown('<div class="question-text">Do you have any suggestions for improving the tool? *</div>', unsafe_allow_html=True)
         suggestions = st.text_area(
-            " ",  # Single space
+            " ", 
             height=100,
             placeholder="Please share your suggestions for improvement...",
             key="suggestions"
         )
         
-        # Job satisfaction question
         st.markdown('<div class="question-text">How has the automation tool affected your job satisfaction? *</div>', unsafe_allow_html=True)
         job_satisfaction = st.radio(
-            " ",  # Single space
+            " ", 
             ['Positively', 'No Change', 'Negatively'],
             key="job_satisfaction",
             index=None
         )
         
-        # Additional feedback question
         st.markdown('<div class="question-text">Additional comments or feedback (Optional):</div>', unsafe_allow_html=True)
         additional_feedback = st.text_area(
-            " ",  # Single space
+            " ", 
             height=100,
             placeholder="Please share any additional feedback...",
             key="feedback"
@@ -504,7 +655,6 @@ def main():
                         'additional_feedback': additional_feedback,
                         'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     }
-                    
                     st.session_state.responses.append(response)
                     st.session_state.current_step = 6
                     st.rerun()
