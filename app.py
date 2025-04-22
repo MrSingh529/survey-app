@@ -665,7 +665,7 @@ def main():
                     required_fields = [
                         inv_frequency, inv_ui_satisfaction, inv_usability_improvements, inv_dashboard_effectiveness,
                         inv_time_saved, inv_error_reduction, inv_workflow_impact, inv_technical_issues,
-                        inv_support_rating, inv_config_ease, inv_process_efficiency, inv_recommendation,
+                        inv_support_rating, inv_config_ease, inv_process_efficiency,
                         inv_future_improvements
                     ]
                     if not all(required_fields):
@@ -687,7 +687,6 @@ def main():
                             'inv_support_rating': inv_support_rating,
                             'inv_config_ease': inv_config_ease,
                             'inv_process_efficiency': inv_process_efficiency,
-                            'inv_recommendation': inv_recommendation,
                             'inv_future_improvements': inv_future_improvements,
                             'inv_additional_feedback': inv_additional_feedback,
                             'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
