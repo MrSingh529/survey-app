@@ -638,14 +638,6 @@ def main():
                 index=None
             )
             
-            st.markdown('<div class="question-text">Would you recommend the Inventory & OOW Report Automation tool to others in your organization? *</div>', unsafe_allow_html=True)
-            inv_recommendation = st.radio(
-                " ", 
-                ['Yes', 'No', 'Not sure'],
-                key="inv_recommendation_radio",
-                index=None
-            )
-            
             st.markdown('<div class="question-text">What additional features or improvements would you like to see in future versions of the Inventory & OOW Report Automation tool? *</div>', unsafe_allow_html=True)
             inv_future_improvements = st.text_area(
                 " ", 
