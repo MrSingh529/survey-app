@@ -1,3 +1,4 @@
+```python
 import streamlit as st
 import pandas as pd
 from datetime import datetime
@@ -537,6 +538,173 @@ def main():
                         st.session_state.current_step = 6
                         st.rerun()
 
+        elif st.session_state.tool == "Inventory & OOW Report Automation":
+            # Inventory & OOW-specific questions
+            # Tool Usage and Satisfaction
+            st.markdown('<div class="section-title">🛠 Tool Usage and Satisfaction</div>', unsafe_allow_html=True)
+            
+            st.markdown('<div class="question-text">How frequently do you use the Inventory & OOW Report Automation tool? *</div>', unsafe_allow_html=True)
+            inv_frequency = st.radio(
+                " ", 
+                ['Daily', 'Weekly', 'Occasionally', 'Rarely', 'Never'],
+                key="inv_frequency_radio",
+                index=None
+            )
+            
+            st.markdown('<div class="question-text">How satisfied are you with the user interface of the Inventory & OOW Report Automation tool? (1 = Very Dissatisfied, 5 = Very Satisfied) *</div>', unsafe_allow_html=True)
+            inv_ui_satisfaction = st.radio(
+                " ", 
+                ['1', '2', '3', '4', '5'],
+                key="inv_ui_satisfaction_radio",
+                index=None
+            )
+            
+            st.markdown('<div class="question-text">What improvements would you suggest for the usability of the Inventory & OOW Report Automation tool? *</div>', unsafe_allow_html=True)
+            inv_usability_improvements = st.text_area(
+                " ", 
+                height=100,
+                placeholder="Please share your suggestions for improving the tool’s usability...",
+                key="inv_usability_improvements"
+            )
+            
+            st.markdown('<div class="question-text">How effective is the dashboard in providing insights into inventory and OOW data? *</div>', unsafe_allow_html=True)
+            inv_dashboard_effectiveness = st.radio(
+                " ", 
+                ['Very effective', 'Moderately effective', 'Slightly effective', 'Not effective'],
+                key="inv_dashboard_effectiveness_radio",
+                index=None
+            )
+            
+            # Time and Productivity Impact
+            st.markdown('<div class="section-title">⏱ Time and Productivity Impact</div>', unsafe_allow_html=True)
+            
+            st.markdown('<div class="question-text">On average, how much time do you save per inventory or OOW report task due to automation? *</div>', unsafe_allow_html=True)
+            inv_time_saved = st.radio(
+                " ", 
+                ['10-30 minutes', '30 minutes to 1 hour', '1-2 hours', 'More than 2 hours'],
+                key="inv_time_saved_radio",
+                index=None
+            )
+            
+            st.markdown('<div class="question-text">Has the Inventory & OOW Report Automation tool reduced manual errors in report generation or email distribution? *</div>', unsafe_allow_html=True)
+            inv_error_reduction = st.radio(
+                " ", 
+                ['Significantly', 'Moderately', 'Slightly', 'Not at all'],
+                key="inv_error_reduction_radio",
+                index=None
+            )
+            
+            st.markdown('<div class="question-text">Which aspects of your inventory and OOW reporting workflow have been improved by the automation tool? (Select all that apply) *</div>', unsafe_allow_html=True)
+            inv_workflow_impact = st.multiselect(
+                " ", 
+                options=['Faster report generation', 'Accurate data summaries', 'Simplified email distribution', 'Reduced manual data entry', 'No significant change'],
+                key="inv_workflow_impact_multi"
+            )
+            
+            # System Performance & Support
+            st.markdown('<div class="section-title">⚙ System Performance & Support</div>', unsafe_allow_html=True)
+            
+            st.markdown('<div class="question-text">Have you encountered any technical issues or bugs while using the Inventory & OOW Report Automation tool? *</div>', unsafe_allow_html=True)
+            inv_technical_issues = st.radio(
+                " ", 
+                ['Yes, frequently', 'Yes, occasionally', 'No issues encountered'],
+                key="inv_technical_issues_radio",
+                index=None
+            )
+            
+            st.markdown('<div class="question-text">How would you rate the support provided for the Inventory & OOW Report Automation tool? *</div>', unsafe_allow_html=True)
+            inv_support_rating = st.radio(
+                " ", 
+                ['Excellent', 'Good', 'Fair', 'Poor'],
+                key="inv_support_rating_radio",
+                index=None
+            )
+            
+            st.markdown('<div class="question-text">How easy was it to configure the tool (e.g., setting up Excel files, output folders, or email settings)? *</div>', unsafe_allow_html=True)
+            inv_config_ease = st.radio(
+                " ", 
+                ['Very easy', 'Easy', 'Neutral', 'Difficult', 'Very difficult'],
+                key="inv_config_ease_radio",
+                index=None
+            )
+            
+            # Overall Feedback and Future Use
+            st.markdown('<div class="section-title">📝 Overall Feedback and Future Use</div>', unsafe_allow_html=True)
+            
+            st.markdown('<div class="question-text">Do you agree that the Inventory & OOW Report Automation tool has improved the efficiency of inventory and OOW reporting in your department? *</div>', unsafe_allow_html=True)
+            inv_process_efficiency = st.radio(
+                " ", 
+                ['Strongly agree', 'Agree', 'Neutral', 'Disagree', 'Strongly disagree'],
+                key="inv_process_efficiency_radio",
+                index=None
+            )
+            
+            st.markdown('<div class="question-text">Would you recommend the Inventory & OOW Report Automation tool to others in your organization? *</div>', unsafe_allow_html=True)
+            inv_recommendation = st.radio(
+                " ", 
+                ['Yes', 'No', 'Not sure'],
+                key="inv_recommendation_radio",
+                index=None
+            )
+            
+            st.markdown('<div class="question-text">What additional features or improvements would you like to see in future versions of the Inventory & OOW Report Automation tool? *</div>', unsafe_allow_html=True)
+            inv_future_improvements = st.text_area(
+                " ", 
+                height=100,
+                placeholder="Please share your suggestions for future features or improvements...",
+                key="inv_future_improvements"
+            )
+            
+            st.markdown('<div class="question-text">Do you have any additional comments or feedback about the Inventory & OOW Report Automation tool? (Optional)</div>', unsafe_allow_html=True)
+            inv_additional_feedback = st.text_area(
+                " ", 
+                height=100,
+                placeholder="Please share any additional feedback...",
+                key="inv_additional_feedback"
+            )
+            
+            # Navigation buttons
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("← Back"):
+                    st.session_state.current_step = 4
+                    st.rerun()
+            with col2:
+                if st.button("Submit"):
+                    required_fields = [
+                        inv_frequency, inv_ui_satisfaction, inv_usability_improvements, inv_dashboard_effectiveness,
+                        inv_time_saved, inv_error_reduction, inv_workflow_impact, inv_technical_issues,
+                        inv_support_rating, inv_config_ease, inv_process_efficiency, inv_recommendation,
+                        inv_future_improvements
+                    ]
+                    if not all(required_fields):
+                        st.error("Please answer all required questions marked with *")
+                    else:
+                        response = {
+                            'department': st.session_state.department,
+                            'tool': st.session_state.tool,
+                            'user': st.session_state.user,
+                            'system_number': st.session_state.system_number,
+                            'inv_frequency': inv_frequency,
+                            'inv_ui_satisfaction': inv_ui_satisfaction,
+                            'inv_usability_improvements': inv_usability_improvements,
+                            'inv_dashboard_effectiveness': inv_dashboard_effectiveness,
+                            'inv_time_saved': inv_time_saved,
+                            'inv_error_reduction': inv_error_reduction,
+                            'inv_workflow_impact': ', '.join(inv_workflow_impact),
+                            'inv_technical_issues': inv_technical_issues,
+                            'inv_support_rating': inv_support_rating,
+                            'inv_config_ease': inv_config_ease,
+                            'inv_process_efficiency': inv_process_efficiency,
+                            'inv_recommendation': inv_recommendation,
+                            'inv_future_improvements': inv_future_improvements,
+                            'inv_additional_feedback': inv_additional_feedback,
+                            'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        }
+                        st.session_state.responses.append(response)
+                        st.session_state.current_step = 6
+                        st.rerun()
+
         else:
             # General questions for other tools
             st.markdown('<div class="section-title">🛠 Tool Usage and Satisfaction</div>', unsafe_allow_html=True)
@@ -714,3 +882,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+```
