@@ -375,10 +375,10 @@ def main():
             f'</div>', 
             unsafe_allow_html=True
         )
-    
+
         # Initialize response dictionary
         response = {}
-    
+
         if st.session_state.tool == "RV PermitFlow (PTW App)":
             # PTW-specific questions
             # Tool Usage and Satisfaction
@@ -436,11 +436,10 @@ def main():
             )
             
             st.markdown('<div class="question-text">How has the PTW automation impacted your overall workflow? *</div>', unsafe_allow_html=True)
-            ptw_workflow_impact = st.radio(
+            ptw_workflow_impact = st.multiselect(
                 " ", 
-                ['Improved efficiency', 'Streamlined communication', 'Reduced stress', 'No significant change'],
-                key="ptw_workflow_impact_radio",
-                index=None
+                options=['Improved efficiency', 'Streamlined communication', 'Reduced stress', 'No significant change'],
+                key="ptw_workflow_impact_multi"
             )
             
             # System Performance & Support
@@ -525,7 +524,7 @@ def main():
                             'ptw_process_handling': ptw_process_handling,
                             'ptw_time_saved': ptw_time_saved,
                             'ptw_error_reduction': ptw_error_reduction,
-                            'ptw_workflow_impact': ptw_workflow_impact,
+                            'ptw_workflow_impact': ', '.join(ptw_workflow_impact),
                             'ptw_technical_issues': ptw_technical_issues,
                             'ptw_support_rating': ptw_support_rating,
                             'ptw_adaptation_ease': ptw_adaptation_ease,
@@ -537,7 +536,7 @@ def main():
                         st.session_state.responses.append(response)
                         st.session_state.current_step = 6
                         st.rerun()
-    
+
         else:
             # General questions for other tools
             st.markdown('<div class="section-title">🛠 Tool Usage and Satisfaction</div>', unsafe_allow_html=True)
